@@ -4,6 +4,8 @@
  */
 package ec.edu.ups.biblioteca.clases;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Lenovo
@@ -11,23 +13,38 @@ package ec.edu.ups.biblioteca.clases;
 public class Libro{
     
     private String titulo;
-    private String autor;
     private int anioPublicacion;
     private String editorial;
     private String genero;
     private int numEjemplares;
-
+    
+    //AGRAGACION:
+    //UN libro tiene autones pero no hay autor sin libro:
+    private ArrayList<Autor> autores;
+    //COMPPOSICION:
+    //un libro tiene ejemplares:
+    private ArrayList<EjemplarLibro> ejemplares;
+    //Constructor vacio 
     public Libro() {
     }
-
-    public Libro(String titulo, String autor, int anioPublicacion, String editorial, String genero, int numEjemplares) {
-        this.titulo = titulo;
-        this.autor = autor;
-        this.anioPublicacion = anioPublicacion;
-        this.editorial = editorial;
-        this.genero = genero;
-        this.numEjemplares = numEjemplares;
-    }
+    //constructor con datos
+   public Libro(String titulo,
+           int anioPublicacion,
+           String editorial,
+           String genero,
+           int numEjemplares) {
+       
+       this.titulo = titulo;
+       this.anioPublicacion = anioPublicacion;
+       this.editorial = editorial;
+       this.genero = genero;
+       this.numEjemplares = numEjemplares;
+       autores = new ArrayList<>();
+       ejemplares = new ArrayList<>();
+}
+   public void agragarAutor(Autor autor){
+       autores.add(autor);
+   }
 
     public String getTitulo() {
         return titulo;
@@ -35,14 +52,6 @@ public class Libro{
 
     public void setTitulo(String titulo) {
         this.titulo = titulo;
-    }
-
-    public String getAutor() {
-        return autor;
-    }
-
-    public void setAutor(String autor) {
-        this.autor = autor;
     }
 
     public int getAnioPublicacion() {
@@ -79,9 +88,6 @@ public class Libro{
 
     @Override
     public String toString() {
-        return "Libro{" + "titulo=" + titulo + ", autor=" + autor + ", anioPublicacion=" + anioPublicacion + ", editorial=" + editorial + ", genero=" + genero + ", numEjemplares=" + numEjemplares + '}';
-    }
-    
-    
-       
+        return "Libro{" + "titulo=" + titulo + ", autores=" + autores + ", anioPublicacion=" + anioPublicacion + ", editorial=" + editorial + ", genero=" + genero + ", numEjemplares=" + numEjemplares + '}';
+    }       
 }

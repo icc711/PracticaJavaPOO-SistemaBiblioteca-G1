@@ -8,11 +8,13 @@ package ec.edu.ups.biblioteca.clases;
  *
  * @author LAB_04
  */
+//SUPER CLASE:
 public class Usuario {
     private String nombre;
     private String cedula;
     private String correo;
     private String estado;
+    
 
     public Usuario() {
     }
@@ -54,6 +56,9 @@ public class Usuario {
 
     public void setEstado(String estado) {
         this.estado = estado;
+    }
+    public void suspender(){
+        estado = "suspendido";
     }
 
     @Override

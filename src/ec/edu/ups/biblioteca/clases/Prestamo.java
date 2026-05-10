@@ -15,15 +15,26 @@ public class Prestamo {
     private LocalDate fechaInicio;
     private LocalDate fechaDevolucion;
     private String estadoP;
+    //ASOCIACION:
+    //Pretamo lo realciono con usuario
+    private Usuario usuario;
+    //pretamo ocupa un ejemplar
+    private EjemplarLibro ejemplar;
 
     public Prestamo() {
     }
 
-    public Prestamo(int codigoPrestamo, LocalDate fechaInicio, LocalDate fechaDevolucion, String estadoP) {
+    public Prestamo(int codigoPrestamo, LocalDate fechaInicio, LocalDate fechaDevolucion, String estadoP,Usuario usuario,EjemplarLibro ejemplar) {
         this.codigoPrestamo = codigoPrestamo;
         this.fechaInicio = fechaInicio;
         this.fechaDevolucion = fechaDevolucion;
         this.estadoP = estadoP;
+        this.usuario = usuario;
+        this.ejemplar= ejemplar;
+    }
+    public void registrarDevolucion(){
+        estadoP = "Devuelto";
+        ejemplar.devolver();
     }
 
     public int getCodigoPrestamo() {

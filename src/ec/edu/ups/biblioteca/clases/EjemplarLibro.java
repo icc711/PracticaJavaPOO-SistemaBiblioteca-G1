@@ -45,6 +45,12 @@ public class EjemplarLibro {
     public void setUbicacion(String ubicacion) {
         this.ubicacion = ubicacion;
     }
+    public void prestar(){
+        estadoL = "Prestado";
+    }
+    public void devolver(){
+        estadoL= "Disponible";
+    }
 
     @Override
     public String toString() {
