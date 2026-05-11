@@ -21,6 +21,26 @@ public class EjemplarLibro {
         this.estadoL = estadoL;
         this.ubicacion = ubicacion;
     }
+    
+    public boolean verificarDisponibilidad(){
+        return estadoL.equalsIgnoreCase("Disponible");
+    }
+    
+    public void marcarPrestado(){
+        estadoL = "Prestado.";
+    }
+    
+    public void marcarDevuelto(){
+        estadoL = "Disponible";
+    }
+    
+    public void prestar(){
+        marcarPrestado();
+    }
+    
+    public void devolver(){
+        marcarDevuelto();
+    }
 
     public String getCodigoBarras() {
         return codigoBarras;
@@ -45,15 +65,9 @@ public class EjemplarLibro {
     public void setUbicacion(String ubicacion) {
         this.ubicacion = ubicacion;
     }
-    public void prestar(){
-        estadoL = "Prestado";
-    }
-    public void devolver(){
-        estadoL= "Disponible";
-    }
 
     @Override
     public String toString() {
-        return "EjemplarLibro{" + "codigoBarras=" + codigoBarras + ", estadoL=" + estadoL + ", ubicacion=" + ubicacion + '}';
+        return "EjemplarLibro{ codigoBarras = " + codigoBarras + ", estadoL = " + estadoL + ", ubicacion = " + ubicacion + '}';
     }            
 }

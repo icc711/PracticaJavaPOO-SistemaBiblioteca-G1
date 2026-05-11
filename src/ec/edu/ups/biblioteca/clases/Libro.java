@@ -5,6 +5,7 @@
 package ec.edu.ups.biblioteca.clases;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -19,16 +20,18 @@ public class Libro{
     private int numEjemplares;
     
     //AGRAGACION:
-    //UN libro tiene autones pero no hay autor sin libro:
+    //UN libro tiene autores pero no hay autor sin libro:
     private ArrayList<Autor> autores;
-    //COMPPOSICION:
+    //COMPOSICION:
     //un libro tiene ejemplares:
     private ArrayList<EjemplarLibro> ejemplares;
     //Constructor vacio 
     public Libro() {
+        autores = new ArrayList<>();
+        ejemplares = new ArrayList<>();
     }
     //constructor con datos
-   public Libro(String titulo,
+    public Libro(String titulo,
            int anioPublicacion,
            String editorial,
            String genero,
@@ -41,10 +44,38 @@ public class Libro{
        this.numEjemplares = numEjemplares;
        autores = new ArrayList<>();
        ejemplares = new ArrayList<>();
+       
+       for (int i=1; i <= numEjemplares; i++){
+           ejemplares.add(new EjemplarLibro(titulo.substring(0, 3).toUpperCase() + 1, "Disponible", "Estante - " + i));
+       }
+    }
+    
+    public EjemplarLibro getEjemplarDisponible() {
+    for (EjemplarLibro e : ejemplares) {
+        if (e.verificarDisponibilidad()) return e;
+    }
+    return null;
 }
-   public void agragarAutor(Autor autor){
+    
+    public void agregarAutor(Autor autor){
        autores.add(autor);
-   }
+       autor.agregarTitulo(this.titulo);
+    }
+    
+    public List<EjemplarLibro> buscarLibro(){
+        return ejemplares;
+    }
+    
+    public List<Autor> buscAutor(){
+        return autores;
+    }
+    public int obtenerDisponible(){
+        int count = 0;
+        for (EjemplarLibro e : ejemplares){
+            if (e.verificarDisponibilidad()) count++;
+        }
+        return count;
+    }
 
     public String getTitulo() {
         return titulo;
@@ -85,9 +116,19 @@ public class Libro{
     public void setNumEjemplares(int numEjemplares) {
         this.numEjemplares = numEjemplares;
     }
+    
+    public ArrayList<Autor> getAutores(){
+        return autores;
+    }
+    
+    public ArrayList<EjemplarLibro> getEjemplares(){
+        return ejemplares;
+    }
 
     @Override
     public String toString() {
-        return "Libro{" + "titulo=" + titulo + ", autores=" + autores + ", anioPublicacion=" + anioPublicacion + ", editorial=" + editorial + ", genero=" + genero + ", numEjemplares=" + numEjemplares + '}';
-    }       
+        return "Libro{" + "titulo=" + titulo + ", anioPublicacion=" + anioPublicacion + ", editorial=" + editorial + ", genero=" + genero + ", numEjemplares=" + numEjemplares + ", autores=" + autores + ", ejemplares=" + ejemplares + '}';
+    }
+
+        
 }

@@ -14,13 +14,34 @@ package ec.edu.ups.biblioteca.clases;
 //SUBCLASE:
 public class Bibliotecario extends Usuario {
     private int idBibliotecario;
+    private String email;
 
     public Bibliotecario() {
     }
 
-    public Bibliotecario(String nombre, String cedula, String correo, String estado, int idBibliotecario) {
-        super(nombre , cedula, correo , estado);// SUPER CLASE 
+    public Bibliotecario(String nombre, String cedula, String correo, String estado, int idBibliotecario, String email) {
+        super(nombre, cedula, correo, estado);// SUPER CLASE 
         this.idBibliotecario = idBibliotecario;
+        this.email = email;
+    }
+    public void registrarPrestamo(Prestamo prestamo){
+        System.out.println("Prestamo registrado por bibliotecario: " + getNombre());
+        System.out.println(prestamo);
+    }
+    
+    public void registrarDevolucion(Prestamo prestamo){
+        prestamo.registrarDevolucion();
+        System.out.println("Devolucion registrada por bibliotecario: " + getNombre());
+    }
+    
+    public void buscarLibro(String titulo, java.util.List<Libro> libros){
+        for (Libro l : libros){
+            if (l.getTitulo().equalsIgnoreCase(titulo)){
+                System.out.println("Libro encontrado: " + l);
+                return;
+            }
+        }
+        System.out.println("Libro no encontrado: " + titulo);       
     }
 
     public int getIdBibliotecario() {
@@ -42,7 +63,7 @@ public class Bibliotecario extends Usuario {
 
     @Override
     public String toString() {
-        return "Bibliotecario{" + "idBibliotecario=" + idBibliotecario + '}' + super.toString();
+        return "Bibliotecario{" + "idBibliotecario = " + idBibliotecario + "Email = " + email + '}' + super.toString();
     }        
     
 }

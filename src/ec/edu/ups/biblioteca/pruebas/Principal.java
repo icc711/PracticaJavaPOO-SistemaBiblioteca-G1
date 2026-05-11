@@ -3,7 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package ec.edu.ups.biblioteca.pruebas;
-             
+
+import ec.edu.ups.biblioteca.clases.Autor;
+import ec.edu.ups.biblioteca.clases.Bibliotecario;        
 import ec.edu.ups.biblioteca.clases.EjemplarLibro;
 import ec.edu.ups.biblioteca.clases.Libro;
 import ec.edu.ups.biblioteca.clases.Prestamo;
@@ -25,6 +27,9 @@ public class Principal {
             ArrayList<Libro> libros = new ArrayList<>();
             ArrayList<Prestamo> prestamos = new ArrayList<>();
             // menu con : crear usuario, crear libro. registar prestamo, devoluvion, mostrar prestamos y salir
+            
+            Bibliotecario admin = new Bibliotecario("Admin", "000", "admin@ups.edu.ec", "activo", 1, "admin@ups.edu.ec");
+            
             int opcion;
             do{
                 System.out.println("BIENVENIDO AL PROGRAMA :)");
@@ -35,11 +40,12 @@ public class Principal {
                 System.out.println("3. Registar prestamo. ");
                 System.out.println("4. Registar devolucion. ");
                 System.out.println("5. Mostrar prestamos. ");
-                System.out.println("6. Salir. ");
+                System.out.println("6. Mostrar info de autor.");
+                System.out.println("7. Salir. ");
                 opcion = sc.nextInt();
                 sc.nextLine();
                 
-                switch(opcion) {
+                switch (opcion) {
                 // CREAR USUARIO
                 case 1:
 
@@ -52,7 +58,7 @@ public class Principal {
                     System.out.println("Ingrese correo:");
                     String correo = sc.nextLine();
 
-                    System.out.println("Ingrese estado(suspendido/activo):");
+                    System.out.println("Ingrese estado(suspendido/activo): ");
                     String estado = sc.nextLine();
 
                     Usuario usuario = new Usuario(nombre,cedula, correo, estado);
@@ -64,50 +70,65 @@ public class Principal {
                 // CREAR LIBRO
                 case 2:
 
-                    System.out.println("Ingrese titulo:");
+                    System.out.println("Ingrese titulo: ");
                     String titulo = sc.nextLine();
 
-                    System.out.println("Ingrese año de publicacion:");
+                    System.out.println("Ingrese anio de publicacion: ");
                     int anio = sc.nextInt();
                     sc.nextLine();
 
-                    System.out.println("Ingrese editorial:");
+                    System.out.println("Ingrese editorial: ");
                     String editorial = sc.nextLine();
 
-                    System.out.println("Ingrese genero:");
+                    System.out.println("Ingrese genero: ");
                     String genero = sc.nextLine();
 
-                    System.out.println("Ingrese numero de ejemplares:");
+                    System.out.println("Ingrese numero de ejemplares: ");
                     int numEjemplares = sc.nextInt();
                     sc.nextLine();
 
                     Libro libro = new Libro(titulo, anio, editorial, genero,numEjemplares);
+                    
+                    System.out.println("Nombre del autor: ");
+                    String nombreAutor = sc.nextLine();
+                    System.out.println("Nacionalidad del autor: ");
+                    String nacionalidad = sc.nextLine();
+                    Autor autor = new Autor(nombreAutor, nacionalidad, LocalDate.of(1980, 1 ,1));  
+                    libro.agregarAutor(autor);
+                    
                     libros.add(libro);
-                    System.out.println("Libro creado correctamente");
+                    System.out.println("Libro creado correctamente! : " + libro.obtenerDisponible() + " ejemplares disponibles." );
 
                     break;
                 // REGISTRAR PRESTAMO
                 case 3:
-
                     if(!usuarios.isEmpty() && !libros.isEmpty()) {
-
-                        EjemplarLibro ejemplar = new EjemplarLibro("ABC123", "Dsiponible", "A1");
-
-                        Prestamo prestamo = new Prestamo(1,LocalDate.now(),LocalDate.now().plusDays(7),"Prestado",usuarios.get(0),ejemplar);
-                        prestamos.add(prestamo);
-                        ejemplar.prestar();
-                        System.out.println("Prestamo registrado correctamente");
+                        EjemplarLibro ejemplarDisponible = null;
+                        
+                        for (Libro l : libros){
+                            ejemplarDisponible = l.getEjemplarDisponible();
+                            if (ejemplarDisponible != null){
+                                break;
+                            }                        
+                        }
+                        if (ejemplarDisponible != null){
+                            Prestamo prestamo = new Prestamo(prestamos.size() + 1, LocalDate.now(), LocalDate.now().plusDays(7), "Prestado", usuarios.get(0), ejemplarDisponible);
+                            prestamo.registrar();
+                            admin.registrarPrestamo(prestamo);
+                            prestamos.add(prestamo);
+                        } else {
+                            System.out.println("No hay ejemplares disponibles.");
+                        }
                     } else {
-                        System.out.println("Debe crear usuarios y libros primero");
+                        System.out.println("Debe crear usuarios y libros primero.");
                     }
                     break;
                 // REGISTRAR DEVOLUCION
                 case 4:
-
-                    if(!prestamos.isEmpty()) {prestamos.get(0).registrarDevolucion();
-                        System.out.println("Devolucion registrada");
+                    if(!prestamos.isEmpty()) {
+                        admin.registrarDevolucion(prestamos.get(0));
                     } else {
-                        System.out.println("No existen prestamos");
+                        System.out.println("No existen prestamos.");
                     }
                     break;
                 // MOSTRAR PRESTAMOS
@@ -117,17 +138,28 @@ public class Principal {
                             System.out.println(p);
                         }
                     } else {
-                        System.out.println("No hay prestamos registrados");
+                        System.out.println("No hay prestamos registrados.");
                     }
                     break;
 
                 case 6:
+                    if (!libros.isEmpty()){
+                        for (Autor a : libros.get(0).getAutores()){
+                            System.out.println(a.obtenerInfo());
+                            System.out.println("Titulos: " + a.buscarTitulo());
+                        }
+                    }else{
+                        System.out.println("No hay libros registrados. ");
+                    }
+                    break;
+                    
+                case 7:
                     System.out.println("Saliendo del sistema...");
                     break;
 
                 default:
                     System.out.println("Opcion invalida");
             }
-        } while(opcion != 6);
+        } while(opcion != 7);
     }
 }

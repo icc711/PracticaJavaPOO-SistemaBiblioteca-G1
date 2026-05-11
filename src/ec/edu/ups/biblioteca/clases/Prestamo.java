@@ -16,15 +16,15 @@ public class Prestamo {
     private LocalDate fechaDevolucion;
     private String estadoP;
     //ASOCIACION:
-    //Pretamo lo realciono con usuario
+    //Prestamo lo relaciono con usuario
     private Usuario usuario;
-    //pretamo ocupa un ejemplar
+    //prestamo ocupa un ejemplar
     private EjemplarLibro ejemplar;
 
     public Prestamo() {
     }
 
-    public Prestamo(int codigoPrestamo, LocalDate fechaInicio, LocalDate fechaDevolucion, String estadoP,Usuario usuario,EjemplarLibro ejemplar) {
+    public Prestamo(int codigoPrestamo, LocalDate fechaInicio, LocalDate fechaDevolucion, String estadoP, Usuario usuario, EjemplarLibro ejemplar) {
         this.codigoPrestamo = codigoPrestamo;
         this.fechaInicio = fechaInicio;
         this.fechaDevolucion = fechaDevolucion;
@@ -32,9 +32,29 @@ public class Prestamo {
         this.usuario = usuario;
         this.ejemplar= ejemplar;
     }
+    
+    public void registrar (){
+        estadoP = "Prestado";
+        ejemplar.marcarPrestado();
+        usuario.agregarPrestamo(this);
+        System.out.println("Prestamo registrado correctamente.");
+        
+    }
+    
     public void registrarDevolucion(){
         estadoP = "Devuelto";
-        ejemplar.devolver();
+        ejemplar.marcarDevuelto();
+        System.out.println("Devolucion registrada correctamente. ");
+    }
+    
+    public boolean renovar(int diasExtra){
+        if (estadoP.equalsIgnoreCase("Prestado")){
+            fechaDevolucion = fechaDevolucion.plusDays(diasExtra);
+            System.out.println("Prestamo renovado. Nueva fecha: " + fechaDevolucion);
+            return true;
+        }
+        System.out.println("No se puede renovar un prestamo devuelto. ");
+        return false;
     }
 
     public int getCodigoPrestamo() {
@@ -68,12 +88,25 @@ public class Prestamo {
     public void setEstadoP(String estadoP) {
         this.estadoP = estadoP;
     }
+    
+    public Usuario getUsuario(){
+        return usuario;
+    }
+    
+    public void setUsuario (Usuario usuario){
+        this.usuario = usuario;
+    }
+    
+    public EjemplarLibro getEjemplar(){
+        return ejemplar;
+    }
+    
+    public void setEjemplar(EjemplarLibro ejemplar){
+        this.ejemplar = ejemplar;       
+    }
 
     @Override
     public String toString() {
-        return "Prestamo{" + "codigoPrestamo=" + codigoPrestamo + ", fechaInicio=" + fechaInicio + ", fechaDevolucion=" + fechaDevolucion + ", estadoP=" + estadoP + '}';
-    }
-    
-    
-    
+        return "Prestamo{" + "codigoPrestamo= " + codigoPrestamo + ", fechaInicio= " + fechaInicio + ", fechaDevolucion= " + fechaDevolucion + ", estadoP= " + estadoP + '}';
+    }      
 }

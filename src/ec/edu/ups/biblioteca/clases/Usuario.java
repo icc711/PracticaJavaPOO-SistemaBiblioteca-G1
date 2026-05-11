@@ -4,6 +4,9 @@
  */
 package ec.edu.ups.biblioteca.clases;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author LAB_04
@@ -15,8 +18,10 @@ public class Usuario {
     private String correo;
     private String estado;
     
+    private ArrayList<Prestamo> prestamos;
 
     public Usuario() {
+        prestamos = new ArrayList<>();
     }
 
     public Usuario(String nombre, String cedula, String correo, String estado) {
@@ -24,6 +29,25 @@ public class Usuario {
         this.cedula = cedula;
         this.correo = correo;
         this.estado = estado;
+        this.prestamos = new ArrayList<>();
+    }
+    
+    public void registrar(){
+        this.estado = "activo";
+        System.out.println("Usuario: " + nombre + " registrado correctamente.");
+    }
+    
+    public void suspender (){
+        estado = "suspendido";
+        System.out.println("Usuario " + nombre + " suspendido.");
+    }
+    
+    public List<Prestamo> verPrestamos(){
+        return prestamos;
+    }
+    
+    public void agregarPrestamo(Prestamo prestamo){
+        prestamos.add(prestamo);
     }
 
     public String getNombre() {
@@ -57,13 +81,10 @@ public class Usuario {
     public void setEstado(String estado) {
         this.estado = estado;
     }
-    public void suspender(){
-        estado = "suspendido";
-    }
 
     @Override
     public String toString() {
-        return "Usuario{" + "nombre=" + nombre + ", cedula=" + cedula + ", correo=" + correo + ", estado=" + estado + '}';
+        return "Usuario{" + "nombre= " + nombre + ", cedula= " + cedula + ", correo= " + correo + ", estado= " + estado + '}';
     }        
     
 }
